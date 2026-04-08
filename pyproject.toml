@@ -1,0 +1,23 @@
+[project]
+name = "projeto-software-2026-1-user"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "flask==2.3.3",
+    "flask-sqlalchemy==3.1.1",
+    "psycopg2-binary==2.9.10",
+    "redis==5.0.1",
+]
+
+[dependency-groups]
+dev = [
+    "flask>=2.3.3",
+    "flask-cors>=6.0.2",
+    "flask-sqlalchemy>=3.1.1",
+    "psycopg2-binary>=2.9.9",
+    "pytest>=9.0.3",
+    "pytest-cov>=7.1.0",
+    "testcontainers>=4.14.2",
+]
