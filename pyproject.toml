@@ -5,11 +5,20 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "authlib>=1.7.0",
     "flask==2.3.3",
+    "flask-cors>=6.0.2",
     "flask-sqlalchemy==3.1.1",
     "psycopg2-binary==2.9.10",
+    "pytest>=9.0.3",
+    "pytest-cov>=7.1.0",
     "redis==5.0.1",
+    "requests>=2.33.1",
+    "testcontainers>=4.14.2",
 ]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
 
 [dependency-groups]
 dev = [
