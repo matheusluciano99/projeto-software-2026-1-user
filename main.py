@@ -3,24 +3,27 @@ from db import db
 from models import User
 import os
 from flask_cors import CORS
+from auth import require_auth, requires_role
 
 def create_app():
     app = Flask(__name__)
     CORS(app)
-    
+
     postgres_user = os.environ.get('POSTGRES_USER', 'appuser')
     postgres_password = os.environ.get('POSTGRES_PASSWORD', 'apppass')
     postgres_url = os.environ.get('POSTGRES_URL', 'localhost')
-    
+
     # Define o padrão, mas permite que o Pytest sobrescreva depois
     db_uri = f"postgresql://{postgres_user}:{postgres_password}@{postgres_url}:5432/users"
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("SQLALCHEMY_DATABASE_URI", db_uri)
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    
+
     db.init_app(app)
 
 
     @app.route("/users", methods=["POST"])
+    @require_auth(None)
+    @requires_role("ADMIN")
     def create_user():
         data = request.json
 
@@ -59,6 +62,8 @@ def create_app():
         }), 200
 
     @app.route("/users/<uuid:user_id>", methods=["DELETE"])
+    @require_auth(None)
+    @requires_role("ADMIN")
     def delete_user(user_id):
         user = User.query.get_or_404(user_id)
 
@@ -68,6 +73,8 @@ def create_app():
         return "", 204
 
     @app.route("/users", methods=["GET"])
+    @require_auth(None)
+    @requires_role("ADMIN")
     def list_users():
         users = User.query.all()
 
