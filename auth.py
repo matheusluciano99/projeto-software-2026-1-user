@@ -4,7 +4,6 @@ from functools import wraps
 import requests
 from authlib.integrations.flask_oauth2 import ResourceProtector
 from authlib.oauth2.rfc7523 import JWTBearerTokenValidator
-from authlib.jose.rfc7517.jwk import JsonWebKey
 from flask import jsonify
 
 AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN", "dev-x65bk1hkee81c774.us.auth0.com")
@@ -16,9 +15,8 @@ ROLES_CLAIM = os.environ.get("AUTH0_ROLES_CLAIM", "https://social-insper.com/rol
 
 class Auth0JWTBearerTokenValidator(JWTBearerTokenValidator):
     def __init__(self, domain, audience):
-        jwks_url = f"https://{domain}/.well-known/jwks.json"
-        public_key = JsonWebKey.import_key_set(requests.get(jwks_url).json())
-        super().__init__(public_key)
+        jwks = requests.get(f"https://{domain}/.well-known/jwks.json").json()
+        super().__init__(jwks)
         self.claims_options = {
             "exp": {"essential": True},
             "aud": {"essential": True, "value": audience},
