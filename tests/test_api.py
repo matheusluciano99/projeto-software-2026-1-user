@@ -111,3 +111,42 @@ def test_list_users_empty(client):
     list_response = client.get("/users")
     assert list_response.status_code == 200
     assert isinstance(list_response.get_json(), list)
+
+
+# --- Testes de autorizacao ---
+
+def test_create_user_without_token_returns_401(unauth_client):
+    resp = unauth_client.post("/users", json={"name": "X", "email": "x@x.com"})
+    assert resp.status_code == 401
+
+
+def test_create_user_without_admin_returns_403(non_admin_client):
+    resp = non_admin_client.post("/users", json={"name": "X", "email": "x@x.com"})
+    assert resp.status_code == 403
+
+
+def test_delete_user_without_token_returns_401(unauth_client):
+    import uuid
+    resp = unauth_client.delete(f"/users/{uuid.uuid4()}")
+    assert resp.status_code == 401
+
+
+def test_delete_user_without_admin_returns_403(non_admin_client):
+    import uuid
+    resp = non_admin_client.delete(f"/users/{uuid.uuid4()}")
+    assert resp.status_code == 403
+
+
+def test_list_users_without_token_returns_401(unauth_client):
+    resp = unauth_client.get("/users")
+    assert resp.status_code == 401
+
+
+def test_list_users_without_admin_returns_403(non_admin_client):
+    resp = non_admin_client.get("/users")
+    assert resp.status_code == 403
+
+
+def test_public_get_user_by_email_does_not_require_auth(unauth_client):
+    resp = unauth_client.get("/users/naoexiste@a.com/email")
+    assert resp.status_code == 404

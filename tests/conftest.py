@@ -44,3 +44,21 @@ def mock_auth(monkeypatch):
 @pytest.fixture()
 def client(app):
     return app.test_client()
+
+
+@pytest.fixture()
+def unauth_client(app, monkeypatch):
+    from authlib.oauth2.rfc6749.errors import MissingAuthorizationError
+
+    def raise_missing(*args, **kwargs):
+        raise MissingAuthorizationError()
+
+    monkeypatch.setattr("auth.require_auth.acquire_token", raise_missing)
+    return app.test_client()
+
+
+@pytest.fixture()
+def non_admin_client(app, monkeypatch):
+    fake_token = {"sub": "test-user", "https://social-insper.com/roles": []}
+    monkeypatch.setattr("auth.require_auth.acquire_token", lambda *a, **kw: fake_token)
+    return app.test_client()
