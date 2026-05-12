@@ -6,9 +6,9 @@ from authlib.integrations.flask_oauth2 import ResourceProtector
 from authlib.oauth2.rfc7523 import JWTBearerTokenValidator
 from flask import jsonify
 
-AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN", "dev-x65bk1hkee81c774.us.auth0.com")
+AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN", "dev-7up2bzejpyjhgks8.us.auth0.com")
 AUTH0_AUDIENCE = os.environ.get(
-    "AUTH0_AUDIENCE", "https://dev-x65bk1hkee81c774.us.auth0.com/api/v2/"
+    "AUTH0_AUDIENCE", "https://social-insper-api"
 )
 ROLES_CLAIM = os.environ.get("AUTH0_ROLES_CLAIM", "https://social-insper.com/roles")
 
