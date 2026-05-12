@@ -8,7 +8,7 @@ from flask import jsonify
 
 AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN", "dev-7up2bzejpyjhgks8.us.auth0.com")
 AUTH0_AUDIENCE = os.environ.get(
-    "AUTH0_AUDIENCE", "https://social-insper-api"
+    "AUTH0_AUDIENCE", "https://dev-7up2bzejpyjhgks8.us.auth0.com/api/v2/"
 )
 ROLES_CLAIM = os.environ.get("AUTH0_ROLES_CLAIM", "https://social-insper.com/roles")
 
